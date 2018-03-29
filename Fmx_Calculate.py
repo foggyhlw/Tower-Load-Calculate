@@ -17,13 +17,17 @@ def cal_Fmx(Conductor, Weather, l):
 	else:
 		sigma_max=Conductor.sigma_max
 	#print(Conductor.sigma_max)
-	return Conductor.E*gama**2*l**2/24/sigma_max**2-\
+	#Conductor.A单位为e-6，公式中除了1000000
+	Fmx=Conductor.E*gama**2*l**2/24/sigma_max**2-\
 	(sigma_max+Conductor.A/1000000*Conductor.E*Weather.T)
+	return dict([(Weather.name,Fmx)])
 
 cond=Conductor('240/30',8)
 low_temp=Weather('低温',-20,0,0)
-ice_temp=Weather('覆冰',-5,10,5)
+high_temp=Weather('高温',40,0,0)
+ice_cover=Weather('覆冰',-5,10,5)
 ave_temp=Weather('年平',10,0,0)
+wind_max=Weather('大风',10,25,0)
 # print(cal_g1(cond))
 # print(cal_g2(cond,high_temp))
 # print(cal_g3(cond,high_temp))
@@ -31,6 +35,15 @@ ave_temp=Weather('年平',10,0,0)
 # print(cal_g5(cond,high_temp))
 # print(cal_g6(cond,high_temp))
 # print(cal_g7(cond,high_temp))
-print(cal_Fmx(cond, low_temp, 200))
-print(cal_Fmx(cond,ice_temp,200))
-print(cal_Fmx(cond,ave_temp,200))
+
+for l in range(10, 600, 20):
+	# print(cal_Fmx(cond, low_temp, l))
+	# print(cal_Fmx(cond,high_temp, l))
+	# print(cal_Fmx(cond,ave_temp, l))
+	# print(cal_Fmx(cond,ice_cover, l))
+	# print(cal_Fmx(cond,wind_max, l))
+	print(l, cal_Fmx(cond, low_temp, l),
+	cal_Fmx(cond,high_temp, l),
+	cal_Fmx(cond,ave_temp, l),
+	cal_Fmx(cond,ice_cover, l),
+	cal_Fmx(cond,wind_max, l))

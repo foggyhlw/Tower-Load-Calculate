@@ -17,7 +17,7 @@ class Conductor:
 		self.area=275.96
 		#弹性模量E(N/mm2)
 		self.E=73000
-		#线膨胀系数A（alpha）  (1/°C)*exp-6  待定
+		#线膨胀系数A（alpha）  (1/°C)*exp-6  
 		self.A=19.6          #(使用时注意单位换算exp-6)
 		#拉断力 Tp(N)
 		self.Tp=75620
