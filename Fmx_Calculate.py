@@ -22,7 +22,7 @@ def cal_Fmx(Conductor, Weather, l):
 	(sigma_max+Conductor.A/1000000*Conductor.E*Weather.T)
 	return dict([(Weather.name,Fmx)])
 
-cond=Conductor('240/30',8)
+cond=Conductor('240/30',3)
 low_temp=Weather('低温',-20,0,0)
 high_temp=Weather('高温',40,0,0)
 ice_cover=Weather('覆冰',-5,10,5)
@@ -35,15 +35,34 @@ wind_max=Weather('大风',10,25,0)
 # print(cal_g5(cond,high_temp))
 # print(cal_g6(cond,high_temp))
 # print(cal_g7(cond,high_temp))
+def critical_span(start, end, step=10):
+	#合并字典函数
+	def merge_dicts(*dict_args):
+	    result = {}
+	    for dictionary in dict_args:
+	        result.update(dictionary)
+	    return result
 
-for l in range(10, 600, 20):
-	# print(cal_Fmx(cond, low_temp, l))
-	# print(cal_Fmx(cond,high_temp, l))
-	# print(cal_Fmx(cond,ave_temp, l))
-	# print(cal_Fmx(cond,ice_cover, l))
-	# print(cal_Fmx(cond,wind_max, l))
-	print(l, cal_Fmx(cond, low_temp, l),
-	cal_Fmx(cond,high_temp, l),
-	cal_Fmx(cond,ave_temp, l),
-	cal_Fmx(cond,ice_cover, l),
-	cal_Fmx(cond,wind_max, l))
+	for l in range(start, end, step):
+		low_temp_fmx=cal_Fmx(cond, low_temp, l)
+		hight_temp_fmx=cal_Fmx(cond,high_temp, l)
+		ave_temp_fmx=cal_Fmx(cond,ave_temp, l)
+		ice_cover_fmx=cal_Fmx(cond,ice_cover, l)
+		wind_max_fmx=cal_Fmx(cond,wind_max, l)
+
+		#将所有工况fmx值合并，用于排序求出对应档距下fmx最大的工况
+		all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
+		print(l,'  :  ',max(all_fmx,key=all_fmx.get))	
+
+
+critical_span(0,500,10)
+
+l=100
+def test_fmx():
+	print(cal_Fmx(cond, low_temp, l))
+	print(cal_Fmx(cond,high_temp, l))
+	print(cal_Fmx(cond,ave_temp, l))
+	print(cal_Fmx(cond,ice_cover, l))
+	print(cal_Fmx(cond,wind_max, l))
+
+test_fmx()

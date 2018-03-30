@@ -51,7 +51,6 @@ def cal_Uz(H,ground_type='B'):
 	elif(ground_type=='D'):
 		return 0.318*(H/10)**0.60
 
-
 #计算导地线及绝缘子串覆冰风荷载增大系数B1
 #对于大于20mm覆冰，取2.0
 def cal_B(ice):
