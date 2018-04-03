@@ -12,7 +12,7 @@ def isNmuber(Number):
 #通用函数
 
 #计算风压不均匀系数α
-#见杆塔荷载规范P19
+#见杆塔结构规范P19
 def cal_alpha(V):
 	assert(type(V)==int or type(V)==float)
 	if (V < 20) :
@@ -106,6 +106,7 @@ def cal_g3(Conductor, Weather):
  	gama3=g3/Conductor.area
  	return g3,gama3
 
+#与风压有关的比载，默认规算值线路平均高度Hav
 def cal_g4(Conductor,Weather,Hav=15):
  	#无冰时风荷载g4,比载gama4,Hav-线路平均高度 110kV-330kV取15m，500kV取20m
  	#大手册公式：g4=0.625*Weather.V**2*Conductor.diameter*alpha*Usc_no_ice/1000

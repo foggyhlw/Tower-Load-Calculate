@@ -22,27 +22,18 @@ def cal_Fmx(Conductor, Weather, l):
 	(sigma_max+Conductor.A/1000000*Conductor.E*Weather.T)
 	return dict([(Weather.name,Fmx)])
 
-cond=Conductor('240/30',3)
-low_temp=Weather('低温',-20,0,0)
-high_temp=Weather('高温',40,0,0)
-ice_cover=Weather('覆冰',-5,10,5)
-ave_temp=Weather('年平',10,0,0)
-wind_max=Weather('大风',10,25,0)
-# print(cal_g1(cond))
-# print(cal_g2(cond,high_temp))
-# print(cal_g3(cond,high_temp))
-# print(cal_g4(cond,high_temp))
-# print(cal_g5(cond,high_temp))
-# print(cal_g6(cond,high_temp))
-# print(cal_g7(cond,high_temp))
+
+#工具函数
+def merge_dicts(*dict_args):
+    result = {}
+    for dictionary in dict_args:
+        result.update(dictionary)
+    return result
+
 def critical_span(start, end, step=10):
 	#合并字典函数
-	def merge_dicts(*dict_args):
-	    result = {}
-	    for dictionary in dict_args:
-	        result.update(dictionary)
-	    return result
 
+	critical_span_list={}
 	for l in range(start, end, step):
 		low_temp_fmx=cal_Fmx(cond, low_temp, l)
 		hight_temp_fmx=cal_Fmx(cond,high_temp, l)
@@ -54,15 +45,34 @@ def critical_span(start, end, step=10):
 		all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
 		print(l,'  :  ',max(all_fmx,key=all_fmx.get))	
 
+#找出某档距l下Fmx最大者，即控制工况,返回对应工况的名称
+def find_control_condition(l):
+	low_temp_fmx=cal_Fmx(cond, low_temp, l)
+	hight_temp_fmx=cal_Fmx(cond,high_temp, l)
+	ave_temp_fmx=cal_Fmx(cond,ave_temp, l)
+	ice_cover_fmx=cal_Fmx(cond,ice_cover, l)
+	wind_max_fmx=cal_Fmx(cond,wind_max, l)
+	all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
+	return(max(all_fmx,key=all_fmx.get))
 
-critical_span(0,500,10)
+#######################for test#########################
+#print(find_control_condition(100))
+# critical_span(0,300,10)
 
-l=100
-def test_fmx():
-	print(cal_Fmx(cond, low_temp, l))
-	print(cal_Fmx(cond,high_temp, l))
-	print(cal_Fmx(cond,ave_temp, l))
-	print(cal_Fmx(cond,ice_cover, l))
-	print(cal_Fmx(cond,wind_max, l))
+# l=100
+# def test_fmx():
+# 	print(cal_Fmx(cond, low_temp, l))
+# 	print(cal_Fmx(cond,high_temp, l))
+# 	print(cal_Fmx(cond,ave_temp, l))
+# 	print(cal_Fmx(cond,ice_cover, l))
+# 	print(cal_Fmx(cond,wind_max, l))
 
-test_fmx()
+# test_fmx()
+
+# print(cal_g1(cond))
+# print(cal_g2(cond,high_temp))
+# print(cal_g3(cond,high_temp))
+# print(cal_g4(cond,high_temp))
+# print(cal_g5(cond,high_temp))
+# print(cal_g6(cond,high_temp))
+# print(cal_g7(cond,high_temp))

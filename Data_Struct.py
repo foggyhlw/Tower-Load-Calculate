@@ -1,14 +1,40 @@
 from Universal_Functions import *
 #H为导地线高度
+class Project_Info:
+	"""docstring for Project"""
+	def __init__(self, voltage, tower_type, loop):
+		#电压等级，以数字形式表示
+		self.Voltage = voltage
+		#tower_type杆塔形式，1代表直线，2代表耐张
+		self.tower_type = tower_type
+		#loop 回路数
+		self.loop = loop
+		#Hav-线路平均高度，110-330取15m，500kV取20m
+		if (self.Voltage <= 330):
+			self.Hav=15
+		if (self.Voltage == 500):
+			self.Hav=20	
 
+class Tower:
+	"""杆塔档距相关参数，其中水平档距固定，垂直档距随工况不同而有变化"""
+	def __init__(self, Lh, Lv, Lr_front, Lr_back):
+	#水平档距Lh,垂直档距Lv,代表档距Lr
+		self.Lh = Lh
+		self.Lv = Lv
+		self.Lr_front = Lr_front
+		self.Lr_back = Lr_back
 
+	#设置挂点高度	,下-中-上
+	def set_hang_points(self, h_bottom, h_medium, h_top):
+		self.h_bottom = h_bottom
+		self.h_medium = h_medium
+		self.h_top= h_top
+
+#导地线类
 class Conductor:
-	def __init__(self,name,safety_factor, average_factor=0.25):
+	def __init__(self, name, voltage, safety_factor, average_factor=0.25):
+		'''导地线类的生成后续需要从数据库中读出'''
 		self.name=name
-
-	#从文件中读取导地线参数，变量前无需加self,因为也无需在该类中新建函数调用其成员变量
-
-
 		#直径 mm
 		self.diameter=21.6
 		#单位重量（kg/km)
@@ -20,25 +46,51 @@ class Conductor:
 		#线膨胀系数A（alpha）  (1/°C)*exp-6  
 		self.A=19.6          #(使用时注意单位换算exp-6)
 		#拉断力 Tp(N)
-		self.Tp=75620
+		self.Tp=75190
 		#20摄氏度直流电阻R
 		self.R=0.11810
-		#许用张力Tmax
-		self.Tmax=self.Tp/safety_factor
-		#许用应力sigma
+		#许用张力Tmax(N),0.95为新线系数
+		self.Tmax=self.Tp/safety_factor*0.95
+		#许用应力sigma(N/mm2)
 		self.sigma_max=self.Tmax/self.area
 		#平均运行张力，默认取最大使用张力的25%
-		self.Tav=self.Tp*average_factor
+		self.Tav=self.Tp*average_factor*0.95
 		#平均运行应力
 		self.sigma_av=self.Tav/self.area
+		#线路电压等级
+		self.Voltage=voltage
 
-
+#绝缘子串类
+class Insulator(object):
+	"""从绝缘子库中读取相关参数
+		lenth-串长,A1-挡风面积, n-联数"""
+	def __init__(self, lenth, As, weight, n):
+		self.lenth = lenth
+		self.weight = weight
+		self.As = As
+		self.n = n
+		
+#气象，地形条件类
 class Weather:
 	 	"""docstring for We"""
-	 	def __init__(self, name, Temperature, Wind_Speed, Ice,):
+	 	def __init__(self, name, Temperature, Wind_Speed, Ice, Ground_Type='B'):
 	 		self.name = name
-
 		 	self.T=Temperature
 		 	self.V=Wind_Speed
 		 	self.ice=Ice
-	 			
+		 	self.ground_type=Ground_Type
+
+################for test##########################	 			
+project=Project_Info(110, 2, 1)
+tower=Tower(100, 200, 100, 250)
+tower.set_hang_points(18, 18, 23)
+cond=Conductor('240/30', 110, 3 )
+low_temp=Weather('低温', -20, 0, 0, 'B')
+high_temp=Weather('高温', 40, 0, 0, 'B')
+ice_cover=Weather('覆冰', -5, 10, 5, 'B')
+ave_temp=Weather('年平', 10, 0, 0, 'B')
+wind_max=Weather('大风', -5, 25, 0, 'B')
+cond_install=Weather('安装', -20, 10, 0, 'B')
+#weather_dict用于通过工况名称查询对应工况信息
+weather_dict={'低温':low_temp, '高温':high_temp, '年平':ave_temp,\
+'覆冰':ice_cover, '大风':wind_max, '安装': cond_install}
