@@ -2,7 +2,7 @@ from Universal_Functions import *
 #H为导地线高度
 class Project_Info:
 	"""docstring for Project"""
-	def __init__(self, voltage, tower_type, loop):
+	def __init__(self, voltage, tower_type, loop, split):
 		#电压等级，以数字形式表示
 		self.Voltage = voltage
 		#tower_type杆塔形式，1代表直线，2代表耐张
@@ -14,6 +14,8 @@ class Project_Info:
 			self.Hav=15
 		if (self.Voltage == 500):
 			self.Hav=20	
+		#split-导线分裂根数
+		self.split=split
 
 class Tower:
 	"""杆塔档距相关参数，其中水平档距固定，垂直档距随工况不同而有变化"""
@@ -31,7 +33,7 @@ class Tower:
 		self.h_top= h_top
 
 #导地线类
-class Conductor:
+class Conductor_240:
 	def __init__(self, name, voltage, safety_factor, average_factor=0.25):
 		'''导地线类的生成后续需要从数据库中读出'''
 		self.name=name
@@ -49,6 +51,36 @@ class Conductor:
 		self.Tp=75190
 		#20摄氏度直流电阻R
 		self.R=0.11810
+		#许用张力Tmax(N),0.95为新线系数
+		self.Tmax=self.Tp/safety_factor*0.95
+		#许用应力sigma(N/mm2)
+		self.sigma_max=self.Tmax/self.area
+		#平均运行张力，默认取最大使用张力的25%
+		self.Tav=self.Tp*average_factor*0.95
+		#平均运行应力
+		self.sigma_av=self.Tav/self.area
+		#线路电压等级
+		self.Voltage=voltage
+
+#导地线类  for test
+class Conductor_300:
+	def __init__(self, name, voltage, safety_factor, average_factor=0.25):
+		'''导地线类的生成后续需要从数据库中读出'''
+		self.name=name
+		#直径 mm
+		self.diameter=23.94
+		#单位重量（kg/km)
+		self.weight_pr_km=1133
+		#截面积(mm2)
+		self.area=338.99
+		#弹性模量E(N/mm2)
+		self.E=73000
+		#线膨胀系数A（alpha）  (1/°C)*exp-6  
+		self.A=19.6          #(使用时注意单位换算exp-6)
+		#拉断力 Tp(N)
+		self.Tp=92220
+		#20摄氏度直流电阻R
+		self.R=0.09614
 		#许用张力Tmax(N),0.95为新线系数
 		self.Tmax=self.Tp/safety_factor*0.95
 		#许用应力sigma(N/mm2)
@@ -81,16 +113,18 @@ class Weather:
 		 	self.ground_type=Ground_Type
 
 ################for test##########################	 			
-project=Project_Info(110, 2, 1)
-tower=Tower(100, 200, 100, 250)
-tower.set_hang_points(18, 18, 23)
-cond=Conductor('240/30', 110, 3 )
+project=Project_Info(220, 2, 1, 2)
+tower=Tower(190, 273, 378, 278)
+tower.set_hang_points(27, 27, 27)
+#cond=Conductor('240/30', 110, 3 )
+cond=Conductor_300('300/40', 220, 2.5 )
 low_temp=Weather('低温', -20, 0, 0, 'B')
 high_temp=Weather('高温', 40, 0, 0, 'B')
 ice_cover=Weather('覆冰', -5, 10, 5, 'B')
 ave_temp=Weather('年平', 10, 0, 0, 'B')
 wind_max=Weather('大风', -5, 25, 0, 'B')
 cond_install=Weather('安装', -20, 10, 0, 'B')
+check_condition=Weather('验算', -5, 10, 15, 'B')
 #weather_dict用于通过工况名称查询对应工况信息
 weather_dict={'低温':low_temp, '高温':high_temp, '年平':ave_temp,\
-'覆冰':ice_cover, '大风':wind_max, '安装': cond_install}
+'覆冰':ice_cover, '大风':wind_max, '安装': cond_install, '验算':check_condition}

@@ -23,6 +23,8 @@ print('年平工况：', sol_equation_of_state(tower.Lr_front, cond, \
 	weather_dict[control_condition],weather_dict['年平'])*cond.area)
 print('安装工况：', sol_equation_of_state(tower.Lr_front, cond, \
 	weather_dict[control_condition],weather_dict['安装'])*cond.area)
+print('验算工况：', sol_equation_of_state(tower.Lr_front, cond, \
+	weather_dict[control_condition],weather_dict['验算'])*cond.area)
 
 control_condition = find_control_condition(tower.Lr_back)
 #print(control_condition)
@@ -44,21 +46,23 @@ print('年平工况：', sol_equation_of_state(tower.Lr_back, cond, \
 	weather_dict[control_condition],weather_dict['年平'])*cond.area)
 print('安装工况：', sol_equation_of_state(tower.Lr_back, cond, \
 	weather_dict[control_condition],weather_dict['安装'])*cond.area)
+print('验算工况：', sol_equation_of_state(tower.Lr_back, cond, \
+	weather_dict[control_condition],weather_dict['验算'])*cond.area)
 
 print('下相导线荷载')
-wind_load_conductor=cal_wind_load_conductor(cond, wind_max, tower.h_bottom, tower.Lh)
+wind_load_conductor=project.split*cal_wind_load_conductor(cond, wind_max, tower.h_bottom, tower.Lh)
 print('线条风荷载:   ',wind_load_conductor)
 wind_load_insulator=cal_wind_load_insulator(wind_max, tower.h_bottom, 0.32)
 print('绝缘子风荷载: ', wind_load_insulator)
 
 print('中相导线荷载')
-wind_load_conductor=cal_wind_load_conductor(cond, wind_max, tower.h_medium, tower.Lh)
+wind_load_conductor=project.split*cal_wind_load_conductor(cond, wind_max, tower.h_medium, tower.Lh)
 print('线条风荷载:   ',wind_load_conductor)
 wind_load_insulator=cal_wind_load_insulator(wind_max, tower.h_medium, 0.32)
 print('绝缘子风荷载: ',wind_load_insulator)
 
 print('上相导线荷载')
-wind_load_conductor=cal_wind_load_conductor(cond, wind_max, tower.h_top, tower.Lh)
+wind_load_conductor=project.split*cal_wind_load_conductor(cond, wind_max, tower.h_top, tower.Lh)
 print('线条风荷载:   ',wind_load_conductor)
 wind_load_insulator=cal_wind_load_insulator(wind_max, tower.h_top, 0.32)
 print('绝缘子风荷载: ',wind_load_insulator)

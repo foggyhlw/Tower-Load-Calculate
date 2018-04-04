@@ -46,13 +46,19 @@ def critical_span(start, end, step=10):
 		print(l,'  :  ',max(all_fmx,key=all_fmx.get))	
 
 #找出某档距l下Fmx最大者，即控制工况,返回对应工况的名称
-def find_control_condition(l):
+#此处
+def find_control_condition(l, allow_ave_control=True ):
+
 	low_temp_fmx=cal_Fmx(cond, low_temp, l)
 	hight_temp_fmx=cal_Fmx(cond,high_temp, l)
 	ave_temp_fmx=cal_Fmx(cond,ave_temp, l)
 	ice_cover_fmx=cal_Fmx(cond,ice_cover, l)
 	wind_max_fmx=cal_Fmx(cond,wind_max, l)
-	all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
+	if(allow_ave_control==True):
+		all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
+	else:
+		all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ice_cover_fmx, wind_max_fmx)
+
 	return(max(all_fmx,key=all_fmx.get))
 
 #######################for test#########################
