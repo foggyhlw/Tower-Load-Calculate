@@ -24,6 +24,7 @@ def cal_Fmx(Conductor, Weather, l):
 
 
 #工具函数
+#合并字典函数
 def merge_dicts(*dict_args):
     result = {}
     for dictionary in dict_args:
@@ -31,7 +32,6 @@ def merge_dicts(*dict_args):
     return result
 
 def critical_span(start, end, step=10):
-	#合并字典函数
 
 	critical_span_list={}
 	for l in range(start, end, step):
@@ -63,7 +63,7 @@ def find_control_condition(l, allow_ave_control=True ):
 
 #######################for test#########################
 #print(find_control_condition(100))
-# critical_span(0,300,10)
+critical_span(0,300,10)
 
 # l=100
 # def test_fmx():
