@@ -4,18 +4,33 @@ class Project_Info:
 	"""docstring for Project"""
 	def __init__(self, voltage, tower_type, loop, split):
 		#电压等级，以数字形式表示
-		self.Voltage = voltage
+		self.voltage = voltage
 		#tower_type杆塔形式，1代表直线，2代表耐张
 		self.tower_type = tower_type
 		#loop 回路数
 		self.loop = loop
 		#Hav-线路平均高度，110-330取15m，500kV取20m
-		if (self.Voltage <= 330):
+		if (self.voltage <= 330):
 			self.Hav=15
-		if (self.Voltage == 500):
+		if (self.voltage == 500):
 			self.Hav=20	
 		#split-导线分裂根数
 		self.split=split
+#相应设置函数，用于configure
+	def set_voltage(self, voltage):
+		self.voltage = voltage
+
+	def set_tower_type(self, tower_type):
+		self.tower_type = tower_type
+
+	def set_loop(self, loop):
+		self.loop = loop
+
+	def set_split(self, split):
+		self.split = split
+
+	def set_Hav(self, Hav):
+		self.Hav = Hav
 
 class Tower:
 	"""杆塔档距相关参数，其中水平档距固定，垂直档距随工况不同而有变化"""
@@ -31,6 +46,26 @@ class Tower:
 		self.h_bottom = h_bottom
 		self.h_medium = h_medium
 		self.h_top= h_top
+
+	#设置函数，用于configure
+	#前后侧水平档距
+	def set_Lh_front(self, Lh_front):
+		self.Lh_front = Lh_front
+
+	def set_Lh_back(self, Lh_back):
+		self.Lh_back = Lh_back
+	#前后侧垂直档距
+	def set_Lv_front(self, Lv_front):
+		self.Lv_front = Lv_front
+
+	def set_Lv_back(self, Lv_back):
+		self.Lv_back = Lv_back
+	#前后侧代表档距
+	def set_Lr_front(self, Lr_front):
+		self.Lr_front = Lr_front
+
+	def set_Lr_back(self, Lr_back):
+		self.Lr_back = Lr_back
 
 #导地线类
 class Conductor_240:
@@ -61,6 +96,9 @@ class Conductor_240:
 		self.sigma_av=self.Tav/self.area
 		#线路电压等级
 		self.Voltage=voltage
+
+	def read_from_db(self, name):
+		pass
 
 #导地线类  for test
 class Conductor_300:
@@ -101,16 +139,31 @@ class Insulator(object):
 		self.weight = weight
 		self.As = As
 		self.n = n
+
+	def read_from_db(self, name):
+		pass
 		
 #气象，地形条件类
 class Weather:
-	 	"""docstring for We"""
-	 	def __init__(self, name, Temperature, Wind_Speed, Ice, Ground_Type='B'):
-	 		self.name = name
-		 	self.T=Temperature
-		 	self.V=Wind_Speed
-		 	self.ice=Ice
-		 	self.ground_type=Ground_Type
+	"""docstring for We"""
+	def __init__(self, name, Temperature, Wind_Speed, Ice, Ground_Type='B'):
+		self.name = name
+		self.T =  Temperature
+		self.V = Wind_Speed
+		self.ice = Ice
+		self.ground_type = Ground_Type
+
+	def read_from_db(self, name):
+		pass
+
+	def set_weather(self, name, Temperature, Wind_Speed, Ice):
+ 		self.name = name
+	 	self.T = Temperature
+	 	self.V = Wind_Speed
+	 	self.ice = Ice
+
+	def set_ground_type(self, ground_type):
+		self.ground_type = ground_type
 
 ################for test##########################	 			
 project=Project_Info(220, 2, 1, 2)

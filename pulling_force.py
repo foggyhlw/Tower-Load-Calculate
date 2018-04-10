@@ -2,9 +2,8 @@ from Data_Struct import *
 from Fmx_Calculate import *
 from Wind_Load import *
 from Equation_Of_State import *
-H=22
-control_condition = find_control_condition(tower.Lr_front)
-#print(control_condition)
+control_condition = find_control_condition(tower.Lr_front, False)
+print('control condition:   ',control_condition)
 if (control_condition == '年平'):
 	sigma_control = cond.sigma_av
 else:
@@ -26,13 +25,13 @@ print('安装工况：', sol_equation_of_state(tower.Lr_front, cond, \
 print('验算工况：', sol_equation_of_state(tower.Lr_front, cond, \
 	weather_dict[control_condition],weather_dict['验算'])*cond.area)
 
-control_condition = find_control_condition(tower.Lr_back)
+control_condition = find_control_condition(tower.Lr_back, False)
 #print(control_condition)
 if (control_condition == '年平'):
 	sigma_control = cond.sigma_av
 else:
 	sigma_control = cond.sigma_max
-print('控制工况:\n',control_condition, sigma_control)
+print('控制工况:',control_condition, sigma_control)
 
 print('高温工况：', sol_equation_of_state(tower.Lr_back, cond, \
 	weather_dict[control_condition],weather_dict['高温'])*cond.area)
