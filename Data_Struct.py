@@ -167,10 +167,10 @@ class Weather:
 
 ################for test##########################	 			
 project=Project_Info(220, 2, 1, 2)
-tower=Tower(190, 273, 378, 278)
+tower=Tower(150, 150, 150, 150) 
 tower.set_hang_points(27, 27, 27)
 #cond=Conductor('240/30', 110, 3 )
-cond=Conductor_300('300/40', 220, 2.5)
+cond=Conductor_300('300/40', 110, 2.9) 
 low_temp=Weather('低温', -20, 0, 0, 'B')
 high_temp=Weather('高温', 40, 0, 0, 'B')
 ice_cover=Weather('覆冰', -5, 10, 5, 'B')

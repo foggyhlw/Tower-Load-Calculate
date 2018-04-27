@@ -3,7 +3,7 @@ from Fmx_Calculate import *
 from Wind_Load import *
 from Equation_Of_State import *
 control_condition = find_control_condition(tower.Lr_front, False)
-print('control condition:   ',control_condition)
+# print('control condition:   ',control_condition)
 if (control_condition == '年平'):
 	sigma_control = cond.sigma_av
 else:

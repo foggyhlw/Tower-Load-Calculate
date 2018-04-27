@@ -1,6 +1,10 @@
 from sympy import Symbol, solveset, S
 from Data_Struct import *
 from math import cos, pi
+
+#在求解状态方程时，有时会出现多个实数解，需要其中的正数解
+def find_positive_ans(ans_list):
+	return max(ans_list)	
 #已知某约束条件下的应力，求解另一工况下的导线应力
 #################
 # 一，悬挂点等高情况下状态方程
@@ -44,8 +48,9 @@ def sol_equation_of_state(l, conductor, weather_known, weather_unknown, beta=0):
 	b=gama_unknown**2*l**2*conductor.E/24
 	#解方程
 	x=Symbol('x')
-	sigma_unknown=list(solveset(x**3+a*x**2-b, domain=S.Reals))[0]*cos(beta/180*pi)
-	# print(sigma_unknown)
+	sigma_unknowns=list(solveset(x**3+a*x**2-b, domain=S.Reals))
+	sigma_unknown=find_positive_ans(sigma_unknowns)
+	# print("sigma: ",sigma_unknown)
 	return sigma_unknown
 
 ###################################for test########################
