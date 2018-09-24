@@ -1,4 +1,4 @@
-from Data_Struct import *
+from Project_Parameters import *
 
 #计算临界档距的判别式，见大手册P187式3-3-21
 def cal_Fmx(Conductor, Weather, l):  
