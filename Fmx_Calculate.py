@@ -31,7 +31,7 @@ def merge_dicts(*dict_args):
         result.update(dictionary)
     return result
 
-def critical_span(start, end, step=10):
+def critical_span(start, end, step=10, allow_ave_control=True):
 
 	critical_span_list={}
 	for l in range(start, end, step):
@@ -42,8 +42,13 @@ def critical_span(start, end, step=10):
 		wind_max_fmx=cal_Fmx(cond,wind_max, l)
 
 		#将所有工况fmx值合并，用于排序求出对应档距下fmx最大的工况
-		all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
-		print(l,'  :  ',max(all_fmx,key=all_fmx.get))	
+		if (allow_ave_control == True):
+			all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
+			# print('允许年平控制')
+		else:
+			all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ice_cover_fmx, wind_max_fmx)
+			# print('不允许年平控制')
+		print(l,'  :  ',max(all_fmx, key = all_fmx.get))	
 
 #找出某档距l下Fmx最大者，即控制工况,返回对应工况的名称
 #此处
@@ -54,16 +59,18 @@ def find_control_condition(l, allow_ave_control=True ):
 	ave_temp_fmx=cal_Fmx(cond,ave_temp, l)
 	ice_cover_fmx=cal_Fmx(cond,ice_cover, l)
 	wind_max_fmx=cal_Fmx(cond,wind_max, l)
-	if(allow_ave_control==True):
+	if( allow_ave_control==True ):
 		all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ave_temp_fmx, ice_cover_fmx, wind_max_fmx)
+		# print('允许年平控制')
 	else:
 		all_fmx=merge_dicts(low_temp_fmx, hight_temp_fmx, ice_cover_fmx, wind_max_fmx)
+		# print('不适用年平控制')
 
 	return(max(all_fmx,key=all_fmx.get))
 
 #######################for test#########################
-#print(find_control_condition(100))
-critical_span(0,300,10)
+print(find_control_condition(170, False))
+critical_span(0,300,10, False)
 
 # l=100
 # def test_fmx():

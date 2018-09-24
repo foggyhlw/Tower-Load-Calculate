@@ -32,7 +32,7 @@ if (control_condition == '年平'):
 	sigma_control = cond.sigma_av
 else:
 	sigma_control = cond.sigma_max
-print('控制工况:\n',control_condition, sigma_control)
+print('控制工况:',control_condition, sigma_control)
 
 print('高温工况：', sol_equation_of_state(tower.Lr_back, cond, \
 	weather_dict[control_condition],weather_dict['高温'])*cond.area)
