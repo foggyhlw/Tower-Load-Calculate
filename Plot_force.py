@@ -6,7 +6,8 @@ from Project_Parameters import *
 import numpy as np
 #import matplotlib.animation as animation
 from matplotlib import rcParams
-rcParams['font.sans-serif'] = ['SemiHei'] #指定默认字体
+rcParams['font.sans-serif'] = ['SimHei']
+rcParams['axes.unicode_minus'] = False 
 Lr_seq = range(40 , 500, 20)
 
 wind_seq = []
