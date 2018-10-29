@@ -18,7 +18,7 @@ ave_seq = []
 construc_seq = []
 check_seq = []
 for Lr in Lr_seq:
-	control_condition = find_control_condition(Lr, False)
+	control_condition = find_control_condition(Lr, True)
 	#print(control_condition)
 	if (control_condition == '年平'):
 		sigma_control = cond.sigma_av 

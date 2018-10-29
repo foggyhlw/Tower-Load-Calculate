@@ -48,7 +48,7 @@ class Tower:
 		self.h_top= h_top
 
 class Conductor:
-	def __init__(self,values,safety_factor,average_factor=0.25):
+	def __init__(self,values,safety_factor,average_factor=4):
 		'''
 		values对应sqlite查询结果中的某一条记录，即用于初始化Conductor类的values变量为查询结果(fetch_all()[n])
 		'''
@@ -73,7 +73,7 @@ class Conductor:
 		#许用应力sigma(N/mm2)
 		self.sigma_max=self.Tmax/self.area
 		#平均运行张力，默认取最大使用张力的25%
-		self.Tav=self.Tp*average_factor*0.95
+		self.Tav=self.Tp/average_factor*0.95
 		#平均运行应力
 		self.sigma_av=self.Tav/self.area
 '''

@@ -15,7 +15,7 @@ tower=Tower(190, 273, 378, 278)
 tower.set_hang_points(27, 27, 27)
 #cond=Conductor('240/30', 110, 3 )
 #cond=Conductor_300('300/40', 220, 2.5)
-cond = Conductor(values[0],2.5)
+cond = Conductor(values[0],safety_factor = 8, average_factor = 12)
 #气象条件设置
 low_temp=Weather('低温', -20, 0, 0, 'B')
 high_temp=Weather('高温', 40, 0, 0, 'B')
